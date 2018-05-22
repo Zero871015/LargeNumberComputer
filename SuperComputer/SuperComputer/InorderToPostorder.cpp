@@ -10,10 +10,10 @@ int operatorPriorityInInput(char c)
 	if (c == '+' || c == '-')return 1;
 	else if (c == '*' || c == '/')return 2;
 	else if (c == '@')return 3;
-	else if (c == '^')return 4;
-	else if (c == '!')return 5;
+	else if (c == '^')return 5;
+	else if (c == '!')return 6;
 	else if (c == ')')return 0;
-	else if (c == '(')return 6;
+	else if (c == '(')return 7;
 	else return -1;
 }
 
@@ -24,7 +24,7 @@ int operatorPriorityInStack(char c)
 	else if (c == '*' || c == '/')return 2;
 	else if (c == '@')return 3;
 	else if (c == '^')return 4;
-	else if (c == '!')return 5;
+	else if (c == '!')return 6;
 	else if (c == '(')return 0;
 	else return -1;
 }
@@ -52,6 +52,7 @@ bool ispriority(char input, char stack)
 //中序轉後序
 string Postorder(string inorder)
 {
+	//去除多餘的空白鍵
 	for (int i = 0; i < (int)inorder.length(); i++)
 	{
 		if (inorder[i] == ' ')
@@ -62,19 +63,21 @@ string Postorder(string inorder)
 	}
 	string stack;	//堆疊運算子
 	string ans;		//後序表示法
-	bool isBlank = false;
+	bool isBlank = false;	//儲存是否已經輸出分隔符號用
+
 	for (int i = 0; i < (int)inorder.length(); i++)
 	{
 		//如果是運算子...
 		if (isOperator(inorder[i]))
 		{
-			isBlank = false;
+			isBlank = false;	//重設分隔符號
+
 			//判別是正負號還是加減
 			if (inorder[i] == '-'|| inorder[i]=='+')
 			{
 				if (i==0||(isOperator(inorder[i - 1])&&inorder[i-1]!=')'&&inorder[i - 1] != '!'))
 				{
-					if (inorder[i] == '-')
+					if (inorder[i] == '-')	//如果是負號就放入@代替，正號直接無視
 						stack.push_back('@');
 					continue;
 				}
@@ -117,6 +120,7 @@ string Postorder(string inorder)
 		//如果是運算元，直接輸出
 		else
 		{
+			//如果還是同一個運算元，先把空白鍵拿掉
 			if (isBlank)
 				ans.pop_back();
 			ans += inorder[i];
@@ -134,6 +138,7 @@ string Postorder(string inorder)
 		}
 		stack.pop_back();
 	}
+	//最後如果沒有空白鍵，補上
 	if (ans[(int)ans.length() - 1] != ' ')
 		ans += ' ';
 	return ans;
