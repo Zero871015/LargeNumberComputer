@@ -9,9 +9,11 @@ int operatorPriorityInInput(char c)
 {
 	if (c == '+' || c == '-')return 1;
 	else if (c == '*' || c == '/')return 2;
-	else if (c == '^')return 3;
+	else if (c == '@')return 3;
+	else if (c == '^')return 4;
+	else if (c == '!')return 5;
 	else if (c == ')')return 0;
-	else if (c == '(')return 4;
+	else if (c == '(')return 6;
 	else return -1;
 }
 
@@ -20,7 +22,9 @@ int operatorPriorityInStack(char c)
 {
 	if (c == '+' || c == '-')return 1;
 	else if (c == '*' || c == '/')return 2;
-	else if (c == '^')return 3;
+	else if (c == '@')return 3;
+	else if (c == '^')return 4;
+	else if (c == '!')return 5;
 	else if (c == '(')return 0;
 	else return -1;
 }
@@ -28,7 +32,7 @@ int operatorPriorityInStack(char c)
 //回傳是否為運算子
 bool isOperator(char c)
 {
-	if (c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')' || c == '^')
+	if (c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')' || c == '^' || c == '!')
 		return true;
 	else
 		return false;
@@ -58,18 +62,20 @@ string Postorder(string inorder)
 	}
 	string stack;	//堆疊運算子
 	string ans;		//後序表示法
-	bool isNegative=false;	//是否有負號在前面
+	bool isBlank = false;
 	for (int i = 0; i < (int)inorder.length(); i++)
 	{
 		//如果是運算子...
 		if (isOperator(inorder[i]))
 		{
+			isBlank = false;
 			//判別是正負號還是加減
 			if (inorder[i] == '-'|| inorder[i]=='+')
 			{
-				if (i==0||(isOperator(inorder[i - 1])&&inorder[i-1]!=')'))
+				if (i==0||(isOperator(inorder[i - 1])&&inorder[i-1]!=')'&&inorder[i - 1] != '!'))
 				{
-					ans += inorder[i];
+					if (inorder[i] == '-')
+						stack.push_back('@');
 					continue;
 				}
 			}
@@ -111,8 +117,11 @@ string Postorder(string inorder)
 		//如果是運算元，直接輸出
 		else
 		{
+			if (isBlank)
+				ans.pop_back();
 			ans += inorder[i];
 			ans += " ";
+			isBlank = true;
 		}
 	}
 	//當輸入結束，將堆疊中的運算子全pop出來
@@ -125,5 +134,7 @@ string Postorder(string inorder)
 		}
 		stack.pop_back();
 	}
+	if (ans[(int)ans.length() - 1] != ' ')
+		ans += ' ';
 	return ans;
 }

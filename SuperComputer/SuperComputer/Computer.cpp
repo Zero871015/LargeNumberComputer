@@ -10,7 +10,7 @@ void Computer(string str)
 	{
 		if (str[i] == ' ')
 		{
-			if ((int)temp.length()==1&&(isOperator(temp[0]) || temp == "!"))
+			if ((int)temp.length()==1&&(isOperator(temp[0]) || temp == "!"||temp=="@"))
 			{
 				int size = stackNumber.size();
 				string ans = "(";
@@ -46,6 +46,13 @@ void Computer(string str)
 					stackNumber.pop_back();
 					stackNumber.push_back(ans);
 				}
+				else if (temp == "@")
+				{
+					ans += '-' + stackNumber[size - 1] + ")";
+					cout << ans << endl;
+					stackNumber.pop_back();
+					stackNumber.push_back(ans);
+				}
 				else if (temp == "^")
 				{
 					ans += stackNumber[size - 2] + "^" + stackNumber[size - 1] + ")";
@@ -58,6 +65,7 @@ void Computer(string str)
 				{
 					ans += stackNumber[size - 1]+"!)";
 					cout << ans << endl;
+					stackNumber.pop_back();
 					stackNumber.push_back(ans);
 				}
 			}
