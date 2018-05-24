@@ -21,10 +21,10 @@
     <ClCompile Include="InorderToPostorder.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
-    <ClCompile Include="BigInteger.cpp">
+    <ClCompile Include="Computer.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
-    <ClCompile Include="Computer.cpp">
+    <ClCompile Include="BigNumber.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,10 +32,10 @@
     <ClInclude Include="InorderToPostorder.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
-    <ClInclude Include="BigInteger.h">
+    <ClInclude Include="Computer.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
-    <ClInclude Include="Computer.h">
+    <ClInclude Include="BigNumber.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>
