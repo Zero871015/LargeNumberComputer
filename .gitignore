@@ -1,0 +1,13 @@
+
+SuperComputer/.vs/SuperComputer/v15/.suo
+SuperComputer/.vs/SuperComputer/v15/Browse.VC.db
+SuperComputer/.vs/SuperComputer/v15/ipch/AutoPCH/43cbc80a562641c5/BIGNUMBER.ipch
+SuperComputer/.vs/SuperComputer/v15/ipch/AutoPCH/94bbb3e0f7ca707d/COMPUTER.ipch
+*.ipch
+*.obj
+*.log
+*.tlog
+*.idb
+*.pdb
+*.exe
+*.ilk

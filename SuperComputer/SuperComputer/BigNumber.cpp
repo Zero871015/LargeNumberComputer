@@ -1,11 +1,9 @@
 #include "BigNumber.h"
 #include <algorithm>
 
-
-
 BigNumber::BigNumber()
 {
-	this->numerator.push_back(0);
+	//this->numerator.push_back(0); //預設為空
 	this->isNagetive = false;
 }
 
@@ -27,7 +25,7 @@ void BigNumber::Print()
 {
 	if (this->isNagetive)
 		cout << '-';
-	for (int i = (int)this->numerator.size()-1; i >=0 ; i--)
+	for (int i = (int)this->numerator.size() - 1; i >= 0; i--)
 	{
 		cout << this->numerator[i];
 	}
@@ -38,15 +36,16 @@ bool ABigerB(BigNumber A, BigNumber B)
 {
 	if (A.numerator.size() > B.numerator.size())
 		return true;
-	else if(A.numerator.size() == B.numerator.size())
+	else if (A.numerator.size() == B.numerator.size())
 	{
-		for (int i = (int)A.numerator.size()-1; i >= 0; i--)
+		for (int i = (int)A.numerator.size() - 1; i >= 0; i--)
 		{
 			if (A.numerator[i] > B.numerator[i])
 				return true;
 			else if (A.numerator[i] < B.numerator[i])
 				return false;
 		}
+		return true;
 	}
 	return false;
 }
@@ -121,7 +120,7 @@ BigNumber Subtract(BigNumber A, BigNumber B)
 		{
 			A.numerator[i] -= B.numerator[i];
 		}
-		for (int i = 0; i < (int)A.numerator.size(); i++)
+		for (int i = 0; i < (int)A.numerator.size() - 1; i++)
 		{
 			if (A.numerator[i] < 0)
 			{
@@ -129,7 +128,7 @@ BigNumber Subtract(BigNumber A, BigNumber B)
 				A.numerator[i + 1]--;
 			}
 		}
-		for (int i = (int)A.numerator.size()-1; i > 0; i--)
+		for (int i = (int)A.numerator.size() - 1; i > 0; i--)
 		{
 			if (A.numerator[i] == 0)
 				A.numerator.pop_back();
@@ -152,7 +151,7 @@ BigNumber Subtract(BigNumber A, BigNumber B)
 				B.numerator[i + 1]--;
 			}
 		}
-		for (int i = (int)B.numerator.size()-1; i > 0; i--)
+		for (int i = (int)B.numerator.size() - 1; i > 0; i--)
 		{
 			if (B.numerator[i] == 0)
 				B.numerator.pop_back();
@@ -167,7 +166,7 @@ BigNumber Subtract(BigNumber A, BigNumber B)
 BigNumber Multiply(BigNumber A, BigNumber B)
 {
 	BigNumber temp;
-	for (int i = 0; i < (int)A.numerator.size()+(int)B.numerator.size(); i++)
+	for (int i = 0; i < (int)A.numerator.size() + (int)B.numerator.size(); i++)
 	{
 		temp.numerator.push_back(0);
 	}
@@ -186,7 +185,7 @@ BigNumber Multiply(BigNumber A, BigNumber B)
 			temp.numerator[i + 1]++;
 		}
 	}
-	for (int i = (int)temp.numerator.size()-1; i > 0; i--)
+	for (int i = (int)temp.numerator.size() - 1; i > 0; i--)
 	{
 		if (temp.numerator[i] == 0)
 			temp.numerator.pop_back();
@@ -201,16 +200,39 @@ BigNumber Multiply(BigNumber A, BigNumber B)
 
 BigNumber Divide(BigNumber A, BigNumber B)
 {
+	int i, j;
 	if (ABigerB(A, B))
 	{
-		BigNumber count("0");
-		BigNumber tempA = A, tempB = B;
-		while (!ABigerB(B,A))
+		BigNumber count, tmp;
+		for (i = 0; i < (int)A.numerator.size(); i++)
 		{
-			A = Subtract(A, B);
-			count = Add(count, BigNumber("1"));
+			j = 0;
+			tmp.numerator.insert(tmp.numerator.begin(), A.numerator[(int)A.numerator.size() - 1 - i]);
+			for (int k = (int)tmp.numerator.size() - 1; k > 0; k--)
+			{
+				if (tmp.numerator[k] == 0)
+					tmp.numerator.pop_back();
+				else
+					break;
+			}
+			if (ABigerB(tmp, B))
+			{
+				while (ABigerB(tmp, B))
+				{
+					tmp = Subtract(tmp, B);
+					j++;
+				}
+			}
+			count.numerator.insert(count.numerator.begin(), j);
 		}
-		count.isNagetive = tempA.isNagetive^tempB.isNagetive;
+		for (i = (int)count.numerator.size() - 1; i > 0; i--)
+		{
+			if (count.numerator[i] == 0)
+				count.numerator.pop_back();
+			else
+				break;
+		}
+		count.isNagetive = A.isNagetive ^ B.isNagetive;
 		return count;
 	}
 	else

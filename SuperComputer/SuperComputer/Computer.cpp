@@ -16,7 +16,7 @@ void Computer(string str)
 			//判斷其是否為運算子
 			if ((int)temp.length() == 1 && (isOperator(temp[0]) || temp == "@"))
 			{
-				int size = stackNumber.size();
+				int size = (int)stackNumber.size();
 				//從堆疊拿出兩個數做加法
 				if (temp == "+")
 				{
