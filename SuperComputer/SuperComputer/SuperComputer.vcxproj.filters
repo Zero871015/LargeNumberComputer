@@ -27,6 +27,9 @@
     <ClCompile Include="BigNumber.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="BigDecimal.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InorderToPostorder.h">
@@ -36,6 +39,9 @@
       <Filter>標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="BigNumber.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="BigDecimal.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>

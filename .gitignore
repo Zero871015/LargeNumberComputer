@@ -11,3 +11,7 @@ SuperComputer/.vs/SuperComputer/v15/ipch/AutoPCH/94bbb3e0f7ca707d/COMPUTER.ipch
 *.pdb
 *.exe
 *.ilk
+*.opendb
+*.vcxproj
+*.filters
+SuperComputer/SuperComputer/SuperComputer.vcxproj

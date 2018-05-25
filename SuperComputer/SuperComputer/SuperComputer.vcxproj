@@ -115,12 +115,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BigDecimal.cpp" />
     <ClCompile Include="BigNumber.cpp" />
     <ClCompile Include="Computer.cpp" />
     <ClCompile Include="InorderToPostorder.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BigDecimal.h" />
     <ClInclude Include="BigNumber.h" />
     <ClInclude Include="Computer.h" />
     <ClInclude Include="InorderToPostorder.h" />

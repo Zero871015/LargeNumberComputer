@@ -12,7 +12,7 @@ int main()
 		cout << "Âà´«¬°«á§Ç¡G" << endl;
 		str = Postorder(str);
 		cout << str << endl;
-
+		
 		Computer(str);
 	}
 	return 0;

@@ -13,12 +13,15 @@ public:
 	void Print();
 
 	friend bool ABigerB(BigNumber A, BigNumber B);
-	friend BigNumber Add(BigNumber A, BigNumber B);
-	friend BigNumber Subtract(BigNumber A, BigNumber B);
-	friend BigNumber Multiply(BigNumber A, BigNumber B);
+	virtual void Add(BigNumber n);
+	virtual void Subtract(BigNumber n);
+	virtual void Multiply(BigNumber n);
 	friend BigNumber Divide(BigNumber A, BigNumber B);
-	friend BigNumber Nagetive(BigNumber A);
-private:
-	bool isNagetive;
+	virtual void Divide(BigNumber n);
+	virtual void Power(BigNumber n);
+	virtual void factorial();
+	virtual void Nagetive();
 	vector<int> numerator;
+protected:
+	bool isNagetive;
 };
