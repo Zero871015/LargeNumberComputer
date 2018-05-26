@@ -202,10 +202,45 @@ void BigNumber::Divide(BigNumber n)
 
 void BigNumber::Power(BigNumber n)
 {
+	BigNumber zero("0"), one("1"), two("2");
+	if (AEqualB(n, zero))
+	{
+		*this = one;
+	}
+	else
+	{
+		BigNumber base = *this;
+		if (n.isNagetive == false)
+		{
+			while (ABigerB(n, two))
+			{
+				this->Multiply(base);
+				n.Subtract(one);
+			}
+		}
+		else
+		{
+			*this = zero;
+		}
+	}
 }
 
 void BigNumber::factorial()
 {
+	BigNumber zero("0"), one("1"), factor("1");
+	if (AEqualB(*this, zero) || AEqualB(*this, one))
+	{
+		*this = one;
+	}
+	else
+	{
+		while (ABigerB(*this, one))
+		{
+			factor.Multiply(*this);
+			this->Subtract(one);
+		}
+		*this = factor;
+	}
 }
 
 void BigNumber::Nagetive()
@@ -224,6 +259,20 @@ bool ABigerB(BigNumber A, BigNumber B)
 			if (A.numerator[i] > B.numerator[i])
 				return true;
 			else if (A.numerator[i] < B.numerator[i])
+				return false;
+		}
+		return true;
+	}
+	return false;
+}
+
+bool AEqualB(BigNumber A, BigNumber B)
+{
+	if (A.numerator.size() == B.numerator.size())
+	{
+		for (int i = (int)A.numerator.size() - 1; i >= 0; i--)
+		{
+			if (A.numerator[i] != B.numerator[i])
 				return false;
 		}
 		return true;
