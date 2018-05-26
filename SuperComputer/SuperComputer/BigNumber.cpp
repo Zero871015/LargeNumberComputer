@@ -3,7 +3,6 @@
 
 BigNumber::BigNumber()
 {
-	//this->numerator.push_back(0); //預設為空
 	this->isNagetive = false;
 }
 
@@ -112,7 +111,7 @@ void BigNumber::Subtract(BigNumber n)
 			else
 				break;
 		}
-		
+
 	}
 }
 
@@ -151,14 +150,96 @@ void BigNumber::Multiply(BigNumber n)
 
 void BigNumber::Divide(BigNumber n)
 {
+	if (ABigerB(*this, n))
+	{
+		int i, j;
+		bool negative = false;
+		BigNumber count, tmp;
+
+		if (this->isNagetive != n.isNagetive)
+			negative = true;
+		this->isNagetive = false;
+		n.isNagetive = false;
+
+		for (i = 0; i < (int)this->numerator.size(); i++)
+		{
+			j = 0;
+			tmp.numerator.insert(tmp.numerator.begin(), this->numerator[(int)this->numerator.size() - 1 - i]);
+			for (int k = (int)tmp.numerator.size() - 1; k > 0; k--)
+			{
+				if (tmp.numerator[k] == 0)
+					tmp.numerator.pop_back();
+				else
+					break;
+			}
+			if (ABigerB(tmp, n))
+			{
+				while (ABigerB(tmp, n))
+				{
+					tmp.Subtract(n);
+					j++;
+				}
+			}
+			count.numerator.insert(count.numerator.begin(), j);
+		}
+		for (i = (int)count.numerator.size() - 1; i > 0; i--)
+		{
+			if (count.numerator[i] == 0)
+				count.numerator.pop_back();
+			else
+				break;
+		}
+		*this = count;
+		if (negative)
+			this->isNagetive = true;
+	}
+	else
+	{
+		*this = BigNumber("0");
+	}
 }
 
 void BigNumber::Power(BigNumber n)
 {
+	BigNumber zero("0"), one("1"), two("2");
+	if (AEqualB(n, zero))
+	{
+		*this = one;
+	}
+	else
+	{
+		BigNumber base = *this;
+		if (n.isNagetive == false)
+		{
+			while (ABigerB(n, two))
+			{
+				this->Multiply(base);
+				n.Subtract(one);
+			}
+		}
+		else
+		{
+			*this = zero;
+		}
+	}
 }
 
 void BigNumber::factorial()
 {
+	BigNumber zero("0"), one("1"), factor("1");
+	if (AEqualB(*this, zero) || AEqualB(*this, one))
+	{
+		*this = one;
+	}
+	else
+	{
+		while (ABigerB(*this, one))
+		{
+			factor.Multiply(*this);
+			this->Subtract(one);
+		}
+		*this = factor;
+	}
 }
 
 void BigNumber::Nagetive()
@@ -184,45 +265,16 @@ bool ABigerB(BigNumber A, BigNumber B)
 	return false;
 }
 
-BigNumber Divide(BigNumber A, BigNumber B)
+bool AEqualB(BigNumber A, BigNumber B)
 {
-	int i, j;
-	if (ABigerB(A, B))
+	if (A.numerator.size() == B.numerator.size())
 	{
-		BigNumber count, tmp;
-		for (i = 0; i < (int)A.numerator.size(); i++)
+		for (int i = (int)A.numerator.size() - 1; i >= 0; i--)
 		{
-			j = 0;
-			tmp.numerator.insert(tmp.numerator.begin(), A.numerator[(int)A.numerator.size() - 1 - i]);
-			for (int k = (int)tmp.numerator.size() - 1; k > 0; k--)
-			{
-				if (tmp.numerator[k] == 0)
-					tmp.numerator.pop_back();
-				else
-					break;
-			}
-			if (ABigerB(tmp, B))
-			{
-				while (ABigerB(tmp, B))
-				{
-					tmp.Subtract(B);
-					j++;
-				}
-			}
-			count.numerator.insert(count.numerator.begin(), j);
+			if (A.numerator[i] != B.numerator[i])
+				return false;
 		}
-		for (i = (int)count.numerator.size() - 1; i > 0; i--)
-		{
-			if (count.numerator[i] == 0)
-				count.numerator.pop_back();
-			else
-				break;
-		}
-		count.isNagetive = A.isNagetive ^ B.isNagetive;
-		return count;
+		return true;
 	}
-	else
-	{
-		return BigNumber("0");
-	}
+	return false;
 }

@@ -13,10 +13,10 @@ public:
 	void Print();
 
 	friend bool ABigerB(BigNumber A, BigNumber B);
+	friend bool AEqualB(BigNumber A, BigNumber B);
 	virtual void Add(BigNumber n);
 	virtual void Subtract(BigNumber n);
 	virtual void Multiply(BigNumber n);
-	friend BigNumber Divide(BigNumber A, BigNumber B);
 	virtual void Divide(BigNumber n);
 	virtual void Power(BigNumber n);
 	virtual void factorial();

@@ -37,7 +37,7 @@ BigDecimal::BigDecimal(string str)
 void BigDecimal::Scale(BigNumber n)
 {
 	BigDecimal temp;
-	for (int i = 0; i < (int)this->numerator.size; i++)
+	for (int i = 0; i < (int)this->numerator.size(); i++)
 	{
 		for (int j = 0; j < (int)n.numerator.size(); j++)
 		{
@@ -45,7 +45,7 @@ void BigDecimal::Scale(BigNumber n)
 			temp.numerator[i + j] += this->numerator[i] * n.numerator[j];
 		}
 	}
-	for (int i = 0; i < (int)this->denominator.size; i++)
+	for (int i = 0; i < (int)this->denominator.size(); i++)
 	{
 		for (int j = 0; j < (int)n.numerator.size(); j++)
 		{
@@ -114,42 +114,7 @@ void BigDecimal::factorial()
 {
 }
 
-bool ABigerB(BigNumber A, BigNumber B)
-{
-	if (A.numerator.size() > B.numerator.size())
-		return true;
-	else if (A.numerator.size() == B.numerator.size())
-	{
-		for (int i = (int)A.numerator.size() - 1; i >= 0; i--)
-		{
-			if (A.numerator[i] > B.numerator[i])
-				return true;
-			else if (A.numerator[i] < B.numerator[i])
-				return false;
-		}
-		return true;
-	}
-	return false;
-}
-
 void RFTCD(BigDecimal & a, BigDecimal & b)
 {
-	BigNumber m, n;
-	m.numerator = a.denominator;
-	n.numerator = b.denominator;
-	while (!(n.numerator.size() == 1 && n.numerator[0] == 0))
-	{
-		if (ABigerB(m, n))
-		{
-			m.Subtract(n);
-		}
-		else
-		{
-			n.Subtract(m);
-		}
-	}
-	a.Scale(n);
-	b.Scale(n);
 
-	//靠杯 打錯 之後重打
 }

@@ -44,11 +44,10 @@ void Computer(string str)
 				//從堆疊拿出兩個數做除法
 				else if (temp == "/")
 				{
-					/*auto bigNum = Divide(stackNumber[size - 2], stackNumber[size - 1]);
-					bigNum.Print();
+					stackNumber[size - 2]->Divide(*stackNumber[size - 1]);
 					stackNumber.pop_back();
-					stackNumber.pop_back();
-					stackNumber.push_back(bigNum);*/
+					size--;
+					stackNumber[size - 1]->Print();
 				}
 				//從堆疊拿出一個數加負號
 				else if (temp == "@")
@@ -59,19 +58,16 @@ void Computer(string str)
 				//從堆疊拿出兩個數做次方
 				else if (temp == "^")
 				{
-					/*ans += stackNumber[size - 2] + "^" + stackNumber[size - 1] + ")";
-					cout << ans << endl;
+					stackNumber[size - 2]->Power(*stackNumber[size - 1]);
 					stackNumber.pop_back();
-					stackNumber.pop_back();
-					stackNumber.push_back(ans);*/
+					size--;
+					stackNumber[size - 1]->Print();
 				}
 				//從堆疊拿出一個數做階層
 				else if (temp == "!")
 				{
-					/*ans += stackNumber[size - 1]+"!)";
-					cout << ans << endl;
-					stackNumber.pop_back();
-					stackNumber.push_back(ans);*/
+					stackNumber[size - 1]->factorial();
+					stackNumber[size - 1]->Print();
 				}
 			}
 			else
