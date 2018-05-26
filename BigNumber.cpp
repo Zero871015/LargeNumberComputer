@@ -1,9 +1,9 @@
-#include "BigNumber.h"
+ï»¿#include "BigNumber.h"
 #include <algorithm>
 
 BigNumber::BigNumber()
 {
-	//this->numerator.push_back(0); //¹w³]¬°ªÅ
+	//this->numerator.push_back(0); //Â¹wÂ³]Â¬Â°ÂªÃ…
 	this->isNagetive = false;
 }
 
@@ -32,149 +32,102 @@ void BigNumber::Print()
 	cout << endl;
 }
 
-bool ABigerB(BigNumber A, BigNumber B)
+void BigNumber::Add(BigNumber n)
 {
-	if (A.numerator.size() > B.numerator.size())
-		return true;
-	else if (A.numerator.size() == B.numerator.size())
+	if (this->isNagetive && !n.isNagetive)
 	{
-		for (int i = (int)A.numerator.size() - 1; i >= 0; i--)
-		{
-			if (A.numerator[i] > B.numerator[i])
-				return true;
-			else if (A.numerator[i] < B.numerator[i])
-				return false;
-		}
-		return true;
+		this->isNagetive = false;
+		swap(*this, n);
+		this->Subtract(n);
 	}
-	return false;
-}
-
-BigNumber Add(BigNumber A, BigNumber B)
-{
-	if (A.isNagetive && !B.isNagetive)
+	else if (!this->isNagetive&&n.isNagetive)
 	{
-		A.isNagetive = false;
-		return Subtract(B, A);
-	}
-	else if (!A.isNagetive&&B.isNagetive)
-	{
-		B.isNagetive = false;
-		return Subtract(A, B);
+		n.isNagetive = false;
+		this->Subtract(n);
 	}
 	else
 	{
-		if (A.numerator.size() >= B.numerator.size())
+		if (this->numerator.size() < n.numerator.size())
 		{
-			for (int i = 0; i < (int)B.numerator.size(); i++)
-			{
-				A.numerator[i] += B.numerator[i];
-			}
-
-			for (int i = 0; i < (int)A.numerator.size() - 1; i++)
-			{
-				if (A.numerator[i] > 9)
-				{
-					A.numerator[i] -= 10;
-					A.numerator[i + 1]++;
-				}
-			}
-			if (A.numerator[A.numerator.size() - 1] > 9)
-			{
-				A.numerator[A.numerator.size() - 1] -= 10;
-				A.numerator.push_back(1);
-			}
-			return A;
+			swap(*this, n);
 		}
-		else
+
+		for (int i = 0; i < (int)n.numerator.size(); i++)
 		{
-			return Add(B, A);
+			this->numerator[i] += n.numerator[i];
+		}
+
+		for (int i = 0; i < (int)this->numerator.size() - 1; i++)
+		{
+			if (this->numerator[i] > 9)
+			{
+				this->numerator[i] -= 10;
+				this->numerator[i + 1]++;
+			}
+		}
+
+		if (this->numerator[this->numerator.size() - 1] > 9)
+		{
+			this->numerator[this->numerator.size() - 1] -= 10;
+			this->numerator.push_back(1);
 		}
 	}
 }
 
-BigNumber Subtract(BigNumber A, BigNumber B)
+void BigNumber::Subtract(BigNumber n)
 {
-	if (A.isNagetive && !B.isNagetive)
+	if (this->isNagetive && !n.isNagetive)
 	{
-		B.isNagetive = true;
-		return Add(A, B);
+		n.isNagetive = true;
+		this->Add(n);
 	}
-	else if (!A.isNagetive&&B.isNagetive)
+	else if (!this->isNagetive&&n.isNagetive)
 	{
-		B.isNagetive = false;
-		return Add(A, B);
-	}
-	else if (A.isNagetive&&B.isNagetive)
-	{
-		BigNumber temp;
-		A.isNagetive = false;
-		B.isNagetive = false;
-		temp = Subtract(B, A);
-		temp.isNagetive = !temp.isNagetive;
-		return temp;
-	}
-	if (ABigerB(A, B))
-	{
-		for (int i = 0; i < (int)B.numerator.size(); i++)
-		{
-			A.numerator[i] -= B.numerator[i];
-		}
-		for (int i = 0; i < (int)A.numerator.size() - 1; i++)
-		{
-			if (A.numerator[i] < 0)
-			{
-				A.numerator[i] += 10;
-				A.numerator[i + 1]--;
-			}
-		}
-		for (int i = (int)A.numerator.size() - 1; i > 0; i--)
-		{
-			if (A.numerator[i] == 0)
-				A.numerator.pop_back();
-			else
-				break;
-		}
-		return A;
+		n.isNagetive = false;
+		this->Add(n);
 	}
 	else
 	{
-		for (int i = 0; i < (int)A.numerator.size(); i++)
+		if (!ABigerB(*this, n))
 		{
-			B.numerator[i] -= A.numerator[i];
+			swap(*this, n);
+			this->isNagetive = !this->isNagetive;
 		}
-		for (int i = 0; i < (int)B.numerator.size(); i++)
+		for (int i = 0; i < (int)n.numerator.size(); i++)
 		{
-			if (B.numerator[i] < 0)
+			this->numerator[i] -= n.numerator[i];
+		}
+		for (int i = 0; i < (int)this->numerator.size() - 1; i++)
+		{
+			if (this->numerator[i] < 0)
 			{
-				B.numerator[i] += 10;
-				B.numerator[i + 1]--;
+				this->numerator[i] += 10;
+				this->numerator[i + 1]--;
 			}
 		}
-		for (int i = (int)B.numerator.size() - 1; i > 0; i--)
+		for (int i = (int)this->numerator.size() - 1; i > 0; i--)
 		{
-			if (B.numerator[i] == 0)
-				B.numerator.pop_back();
+			if (this->numerator[i] == 0)
+				this->numerator.pop_back();
 			else
 				break;
 		}
-		B.isNagetive = true;
-		return B;
+
 	}
 }
 
-BigNumber Multiply(BigNumber A, BigNumber B)
+void BigNumber::Multiply(BigNumber n)
 {
 	BigNumber temp;
-	for (int i = 0; i < (int)A.numerator.size() + (int)B.numerator.size(); i++)
+	for (int i = 0; i < (int)this->numerator.size() + (int)n.numerator.size(); i++)
 	{
 		temp.numerator.push_back(0);
 	}
-	for (int i = 0; i < (int)A.numerator.size(); i++)
+	for (int i = 0; i < (int)this->numerator.size(); i++)
 	{
-		for (int j = 0; j < (int)B.numerator.size(); j++)
+		for (int j = 0; j < (int)n.numerator.size(); j++)
 		{
-			temp.numerator[i + j] += A.numerator[i] * B.numerator[j];
+			temp.numerator[i + j] += this->numerator[i] * n.numerator[j];
 		}
 	}
 	for (int i = 0; i < (int)temp.numerator.size(); i++)
@@ -192,22 +145,27 @@ BigNumber Multiply(BigNumber A, BigNumber B)
 		else
 			break;
 	}
-	temp.isNagetive = A.isNagetive^B.isNagetive;
-
-
-	return temp;
+	temp.isNagetive = this->isNagetive^n.isNagetive;
+	*this = temp;
 }
 
-BigNumber Divide(BigNumber A, BigNumber B)
+void BigNumber::Divide(BigNumber n)
 {
-	int i, j;
-	if (ABigerB(A, B))
+	if (ABigerB(*this, n))
 	{
+		int i, j;
+		bool negative = false;
 		BigNumber count, tmp;
-		for (i = 0; i < (int)A.numerator.size(); i++)
+
+		if (this->isNagetive != n.isNagetive)
+			negative = true;
+		this->isNagetive = false;
+		n.isNagetive = false;
+
+		for (i = 0; i < (int)this->numerator.size(); i++)
 		{
 			j = 0;
-			tmp.numerator.insert(tmp.numerator.begin(), A.numerator[(int)A.numerator.size() - 1 - i]);
+			tmp.numerator.insert(tmp.numerator.begin(), this->numerator[(int)this->numerator.size() - 1 - i]);
 			for (int k = (int)tmp.numerator.size() - 1; k > 0; k--)
 			{
 				if (tmp.numerator[k] == 0)
@@ -215,11 +173,11 @@ BigNumber Divide(BigNumber A, BigNumber B)
 				else
 					break;
 			}
-			if (ABigerB(tmp, B))
+			if (ABigerB(tmp, n))
 			{
-				while (ABigerB(tmp, B))
+				while (ABigerB(tmp, n))
 				{
-					tmp = Subtract(tmp, B);
+					tmp.Subtract(n);
 					j++;
 				}
 			}
@@ -232,17 +190,43 @@ BigNumber Divide(BigNumber A, BigNumber B)
 			else
 				break;
 		}
-		count.isNagetive = A.isNagetive ^ B.isNagetive;
-		return count;
+		*this = count;
+		if (negative)
+			this->isNagetive = true;
 	}
 	else
 	{
-		return BigNumber("0");
+		*this = BigNumber("0");
 	}
 }
 
-BigNumber Nagetive(BigNumber A)
+void BigNumber::Power(BigNumber n)
 {
-	A.isNagetive = !A.isNagetive;
-	return A;
+}
+
+void BigNumber::factorial()
+{
+}
+
+void BigNumber::Nagetive()
+{
+	this->isNagetive = !this->isNagetive;
+}
+
+bool ABigerB(BigNumber A, BigNumber B)
+{
+	if (A.numerator.size() > B.numerator.size())
+		return true;
+	else if (A.numerator.size() == B.numerator.size())
+	{
+		for (int i = (int)A.numerator.size() - 1; i >= 0; i--)
+		{
+			if (A.numerator[i] > B.numerator[i])
+				return true;
+			else if (A.numerator[i] < B.numerator[i])
+				return false;
+		}
+		return true;
+	}
+	return false;
 }
