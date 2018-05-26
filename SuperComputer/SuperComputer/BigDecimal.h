@@ -9,6 +9,7 @@ public:
 	BigDecimal(string str);
 
 	friend void RFTCD(BigDecimal &a, BigDecimal &b);
+	void Scale(BigNumber n);
 	void Add(BigDecimal n);
 	void Subtract(BigDecimal n);
 	void Multiply(BigDecimal n);

@@ -34,8 +34,64 @@ BigDecimal::BigDecimal(string str)
 	this->isNagetive = false;
 }
 
+void BigDecimal::Scale(BigNumber n)
+{
+	BigDecimal temp;
+	for (int i = 0; i < (int)this->numerator.size; i++)
+	{
+		for (int j = 0; j < (int)n.numerator.size(); j++)
+		{
+			temp.numerator.push_back(0);
+			temp.numerator[i + j] += this->numerator[i] * n.numerator[j];
+		}
+	}
+	for (int i = 0; i < (int)this->denominator.size; i++)
+	{
+		for (int j = 0; j < (int)n.numerator.size(); j++)
+		{
+			temp.denominator.push_back(0);
+			temp.denominator[i + j] += this->denominator[i] * n.numerator[j];
+		}
+	}
+
+	for (int i = 0; i < (int)this->numerator.size()-1; i++)
+	{
+		while (this->numerator[i] > 9)
+		{
+			this->numerator[i] -= 10;
+			this->numerator[i + 1]++;
+		}
+	}
+	for (int i = 0; i < (int)this->denominator.size() - 1; i++)
+	{
+		while (this->denominator[i] > 9)
+		{
+			this->denominator[i] -= 10;
+			this->denominator[i + 1]++;
+		}
+	}
+
+	for (int i = (int)temp.numerator.size(); i>0; i--)
+	{
+		if (temp.numerator[i] == 0)
+			temp.numerator.pop_back();
+		else
+			break;
+	}
+	for (int i = (int)temp.denominator.size(); i > 0; i--)
+	{
+		if (temp.denominator[i] == 0)
+			temp.denominator.pop_back();
+		else
+			break;
+	}
+
+	*this = temp;
+}
+
 void BigDecimal::Add(BigDecimal n)
 {
+	RFTCD(*this, n);
 }
 
 void BigDecimal::Subtract(BigDecimal n)
@@ -58,6 +114,24 @@ void BigDecimal::factorial()
 {
 }
 
+bool ABigerB(BigNumber A, BigNumber B)
+{
+	if (A.numerator.size() > B.numerator.size())
+		return true;
+	else if (A.numerator.size() == B.numerator.size())
+	{
+		for (int i = (int)A.numerator.size() - 1; i >= 0; i--)
+		{
+			if (A.numerator[i] > B.numerator[i])
+				return true;
+			else if (A.numerator[i] < B.numerator[i])
+				return false;
+		}
+		return true;
+	}
+	return false;
+}
+
 void RFTCD(BigDecimal & a, BigDecimal & b)
 {
 	BigNumber m, n;
@@ -65,5 +139,17 @@ void RFTCD(BigDecimal & a, BigDecimal & b)
 	n.numerator = b.denominator;
 	while (!(n.numerator.size() == 1 && n.numerator[0] == 0))
 	{
+		if (ABigerB(m, n))
+		{
+			m.Subtract(n);
+		}
+		else
+		{
+			n.Subtract(m);
+		}
 	}
+	a.Scale(n);
+	b.Scale(n);
+
+	//靠杯 打錯 之後重打
 }
