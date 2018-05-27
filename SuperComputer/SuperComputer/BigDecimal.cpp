@@ -34,6 +34,11 @@ BigDecimal::BigDecimal(string str)
 	this->isNagetive = false;
 }
 
+bool BigDecimal::isDecimal()
+{
+	return true;
+}
+
 void BigDecimal::Scale(BigNumber n)
 {
 	BigDecimal temp;
@@ -89,24 +94,31 @@ void BigDecimal::Scale(BigNumber n)
 	*this = temp;
 }
 
-void BigDecimal::Add(BigDecimal n)
+
+void BigDecimal::Add(BigNumber &n)
 {
-	RFTCD(*this, n);
+	if (n.isDecimal())
+	{
+		//Ãa£{
+		//RFTCD(*this, n);
+	}
+	else
+		cout << "testN";
 }
 
-void BigDecimal::Subtract(BigDecimal n)
+void BigDecimal::Subtract(BigNumber &n)
 {
 }
 
-void BigDecimal::Multiply(BigDecimal n)
+void BigDecimal::Multiply(BigNumber &n)
 {
 }
 
-void BigDecimal::Divide(BigDecimal n)
+void BigDecimal::Divide(BigNumber &n)
 {
 }
 
-void BigDecimal::Power(BigDecimal n)
+void BigDecimal::Power(BigNumber &n)
 {
 }
 
@@ -116,5 +128,32 @@ void BigDecimal::factorial()
 
 void RFTCD(BigDecimal & a, BigDecimal & b)
 {
+	BigNumber m , n;
+	m.numerator = a.denominator;
+	n.numerator = b.denominator;
+	BigNumber GCD, LCM;
+	BigNumber ta, tb;
+	while (!AEqualB(n, BigNumber("0")))
+	{
+		if (ABigerB(m, n))
+		{
+			m.Subtract(n);
+		}
+		else
+			n.Subtract(m);
+	}
+	GCD = m;
+	m.numerator = a.denominator;
+	n.numerator = b.denominator;
+	m.Multiply(n);
+	m.Divide(GCD);
+	LCM = m;
+	ta = LCM; tb = LCM;
+	m.numerator = a.denominator;
+	n.numerator = b.denominator;
+	ta.Divide(m);
+	tb.Divide(n);
+	a.Scale(ta);
+	b.Scale(tb);
 
 }

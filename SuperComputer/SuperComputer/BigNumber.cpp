@@ -31,7 +31,12 @@ void BigNumber::Print()
 	cout << endl;
 }
 
-void BigNumber::Add(BigNumber n)
+bool BigNumber::isDecimal()
+{
+	return false;
+}
+
+void BigNumber::Add(BigNumber &n)
 {
 	if (this->isNagetive && !n.isNagetive)
 	{
@@ -73,7 +78,7 @@ void BigNumber::Add(BigNumber n)
 	}
 }
 
-void BigNumber::Subtract(BigNumber n)
+void BigNumber::Subtract(BigNumber &n)
 {
 	if (this->isNagetive && !n.isNagetive)
 	{
@@ -115,7 +120,7 @@ void BigNumber::Subtract(BigNumber n)
 	}
 }
 
-void BigNumber::Multiply(BigNumber n)
+void BigNumber::Multiply(BigNumber &n)
 {
 	BigNumber temp;
 	for (int i = 0; i < (int)this->numerator.size() + (int)n.numerator.size(); i++)
@@ -148,7 +153,7 @@ void BigNumber::Multiply(BigNumber n)
 	*this = temp;
 }
 
-void BigNumber::Divide(BigNumber n)
+void BigNumber::Divide(BigNumber &n)
 {
 	if (ABigerB(*this, n))
 	{
@@ -199,7 +204,7 @@ void BigNumber::Divide(BigNumber n)
 	}
 }
 
-void BigNumber::Power(BigNumber n)
+void BigNumber::Power(BigNumber &n)
 {
 	BigNumber zero("0"), one("1"), two("2");
 	if (AEqualB(n, zero))

@@ -14,11 +14,12 @@ public:
 
 	friend bool ABigerB(BigNumber A, BigNumber B);
 	friend bool AEqualB(BigNumber A, BigNumber B);
-	virtual void Add(BigNumber n);
-	virtual void Subtract(BigNumber n);
-	virtual void Multiply(BigNumber n);
-	virtual void Divide(BigNumber n);
-	virtual void Power(BigNumber n);
+	virtual bool isDecimal();
+	virtual void Add(BigNumber &n);
+	virtual void Subtract(BigNumber &n);
+	virtual void Multiply(BigNumber &n);
+	virtual void Divide(BigNumber &n);
+	virtual void Power(BigNumber &n);
 	virtual void factorial();
 	virtual void Nagetive();
 	vector<int> numerator;

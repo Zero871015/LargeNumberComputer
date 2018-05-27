@@ -8,13 +8,14 @@ public:
 	~BigDecimal();
 	BigDecimal(string str);
 
+	bool isDecimal();
 	friend void RFTCD(BigDecimal &a, BigDecimal &b);
 	void Scale(BigNumber n);
-	void Add(BigDecimal n);
-	void Subtract(BigDecimal n);
-	void Multiply(BigDecimal n);
-	void Divide(BigDecimal n);
-	void Power(BigDecimal n);
+	void Add(BigNumber &n);
+	void Subtract(BigNumber &n);
+	void Multiply(BigNumber &n);
+	void Divide(BigNumber &n);
+	void Power(BigNumber &n);
 	void factorial();
 private:
 	vector<int> denominator;
