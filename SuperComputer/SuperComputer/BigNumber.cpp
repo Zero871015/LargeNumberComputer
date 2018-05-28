@@ -31,6 +31,13 @@ void BigNumber::Print()
 	cout << endl;
 }
 
+vector<int> BigNumber::getDenominator()
+{
+	vector<int> temp;
+	temp.push_back(1);
+	return temp;
+}
+
 bool BigNumber::isDecimal()
 {
 	return false;

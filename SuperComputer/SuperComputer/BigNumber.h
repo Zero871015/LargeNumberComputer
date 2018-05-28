@@ -10,10 +10,11 @@ public:
 	BigNumber();
 	~BigNumber();
 	BigNumber(string str);
-	void Print();
+	virtual void Print();
 
 	friend bool ABigerB(BigNumber A, BigNumber B);
 	friend bool AEqualB(BigNumber A, BigNumber B);
+	virtual vector<int> getDenominator();
 	virtual bool isDecimal();
 	virtual void Add(BigNumber &n);
 	virtual void Subtract(BigNumber &n);
@@ -23,6 +24,5 @@ public:
 	virtual void factorial();
 	virtual void Nagetive();
 	vector<int> numerator;
-protected:
 	bool isNagetive;
 };

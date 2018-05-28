@@ -7,7 +7,10 @@ public:
 	BigDecimal();
 	~BigDecimal();
 	BigDecimal(string str);
+	BigDecimal(BigNumber n);
 
+	void Print();
+	vector<int> getDenominator();
 	bool isDecimal();
 	friend void RFTCD(BigDecimal &a, BigDecimal &b);
 	void Scale(BigNumber n);

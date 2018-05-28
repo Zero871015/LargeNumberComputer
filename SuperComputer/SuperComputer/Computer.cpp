@@ -7,6 +7,7 @@
 void Computer(string str)
 {
 	vector<BigNumber*> stackNumber;	//一個stack用於存放運算元
+	BigDecimal tran;
 	string temp = "";	//一個暫存空間
 	for (int i = 0; i < (int)str.length(); i++)
 	{
@@ -20,6 +21,8 @@ void Computer(string str)
 				//從堆疊拿出兩個數做加法
 				if (temp == "+")
 				{
+					if (stackNumber[size - 1]->isDecimal() && !stackNumber[size - 2]->isDecimal())
+						swap(stackNumber[size - 1], stackNumber[size - 2]);
 					stackNumber[size - 2]->Add(*stackNumber[size - 1]);
 					stackNumber.pop_back();
 					size--;
@@ -36,6 +39,8 @@ void Computer(string str)
 				//從堆疊拿出兩個數做乘法
 				else if (temp == "*")
 				{
+					if (stackNumber[size - 1]->isDecimal() && !stackNumber[size - 2]->isDecimal())
+						swap(stackNumber[size - 1], stackNumber[size - 2]);
 					stackNumber[size - 2]->Multiply(*stackNumber[size - 1]);
 					stackNumber.pop_back();
 					size--;
@@ -44,6 +49,8 @@ void Computer(string str)
 				//從堆疊拿出兩個數做除法
 				else if (temp == "/")
 				{
+					if (stackNumber[size - 1]->isDecimal() && !stackNumber[size - 2]->isDecimal())
+						swap(stackNumber[size - 1], stackNumber[size - 2]);
 					stackNumber[size - 2]->Divide(*stackNumber[size - 1]);
 					stackNumber.pop_back();
 					size--;
