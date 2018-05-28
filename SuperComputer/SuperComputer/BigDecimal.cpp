@@ -1,4 +1,7 @@
 #include "BigDecimal.h"
+#include "InorderToPostorder.h"
+#include "Computer.h"
+
 BigDecimal::BigDecimal()
 {
 	this->isNagetive = false;
@@ -10,46 +13,64 @@ BigDecimal::~BigDecimal()
 
 BigDecimal::BigDecimal(string str)
 {
-	reverse(str.begin(), str.end());
-	bool isPoint = true;
+	bool isDone = true;
 	for (int i = 0; i < (int)str.length(); i++)
 	{
-		if (str[i] == '.')
+		if ((str[i] < '0' || str[i] > '9') && str[i] != '.')
 		{
-			this->denominator.push_back(0);
-			this->denominator[i] = 1;
-			isPoint = false;
+			isDone = false;
+			break;
 		}
-		else
+	}
+	//輸入是數字
+	if (isDone)
+	{
+		reverse(str.begin(), str.end());
+		bool isPoint = true;
+		for (int i = 0; i < (int)str.length(); i++)
 		{
-			if (isPoint)
+			if (str[i] == '.')
 			{
 				this->denominator.push_back(0);
-				this->numerator.push_back(str[i] - '0');
+				this->denominator[i] = 1;
+				isPoint = false;
 			}
 			else
 			{
-				this->numerator.push_back(str[i] - '0');
+				if (isPoint)
+				{
+					this->denominator.push_back(0);
+					this->numerator.push_back(str[i] - '0');
+				}
+				else
+				{
+					this->numerator.push_back(str[i] - '0');
+				}
 			}
 		}
-	}
-	for (int i = (int)this->denominator.size() - 1; i > 0; i--)
-	{
-		if (this->denominator[i] == 0)
+		for (int i = (int)this->denominator.size() - 1; i > 0; i--)
 		{
-			this->denominator.pop_back();
+			if (this->denominator[i] == 0)
+			{
+				this->denominator.pop_back();
+			}
+			else
+				break;
 		}
-		else
-			break;
+		for (int i = (int)this->numerator.size() - 1; i >0; i--)
+		{
+			if (this->numerator[i] == 0)
+				this->numerator.pop_back();
+			else
+				break;
+		}
+		this->isNagetive = false;
 	}
-	for (int i = (int)this->numerator.size() - 1; i >0; i--)
+	//輸入是運算式
+	else
 	{
-		if (this->numerator[i] == 0)
-			this->numerator.pop_back();
-		else
-			break;
+		*this = Computer(Postorder(str));
 	}
-	this->isNagetive = false;
 }
 
 BigDecimal::BigDecimal(BigNumber n)
@@ -78,6 +99,11 @@ void BigDecimal::Print()
 vector<int> BigDecimal::getDenominator()
 {
 	return this->denominator;
+}
+
+void BigDecimal::setDenominator(vector<int> d)
+{
+	this->denominator = d;
 }
 
 bool BigDecimal::isDecimal()
@@ -204,7 +230,7 @@ void BigDecimal::Power(BigNumber &n)
 {
 }
 
-void BigDecimal::factorial()
+void BigDecimal::Factorial()
 {
 }
 
@@ -239,3 +265,5 @@ void RFTCD(BigDecimal & a, BigDecimal & b)
 	b.Scale(tb);
 
 }
+
+map <string, BigDecimal> BigDecimal::bigDecimals = {};

@@ -4,7 +4,7 @@
 #include "BigDecimal.h"
 #include <vector>
 
-void Computer(string str)
+BigNumber& Computer(string str)
 {
 	vector<BigNumber*> stackNumber;	//一個stack用於存放運算元
 	BigDecimal tran;
@@ -50,8 +50,16 @@ void Computer(string str)
 				else if (temp == "/")
 				{
 					if (stackNumber[size - 1]->isDecimal() && !stackNumber[size - 2]->isDecimal())
+					{
+						BigDecimal buffer(*stackNumber[size - 1]);
+						buffer.setDenominator(stackNumber[size - 1]->getDenominator());
 						swap(stackNumber[size - 1], stackNumber[size - 2]);
-					stackNumber[size - 2]->Divide(*stackNumber[size - 1]);
+						stackNumber[size - 2]->setDenominator(stackNumber[size-1]->getDenominator());
+						stackNumber[size-2]->numerator=stackNumber[size-1]->numerator;
+						stackNumber[size - 2]->Divide(buffer);
+					}
+					else
+						stackNumber[size - 2]->Divide(*stackNumber[size - 1]);
 					stackNumber.pop_back();
 					size--;
 					stackNumber[size - 1]->Print();
@@ -73,30 +81,47 @@ void Computer(string str)
 				//從堆疊拿出一個數做階層
 				else if (temp == "!")
 				{
-					stackNumber[size - 1]->factorial();
+					stackNumber[size - 1]->Factorial();
 					stackNumber[size - 1]->Print();
 				}
 			}
 			else
 			{
-				bool isPoint = false;
-				for (int i = 0; i < (int)temp.length(); i++)
+				map<string, BigDecimal>::iterator itd;
+				itd = BigDecimal::bigDecimals.find(temp);
+				map<string, BigNumber>::iterator itn;
+				itn = BigNumber::bigNumbers.find(temp);
+				if (itd != BigDecimal::bigDecimals.end())
 				{
-					if (temp[i] == '.')
-					{
-						isPoint = true;
-						break;
-					}
+					auto bigNum = new BigDecimal(BigDecimal::bigDecimals[temp]);
+					stackNumber.push_back(bigNum);
 				}
-				if (isPoint)
+				else if (itn != BigNumber::bigNumbers.end())
 				{
-					auto bigNum = new BigDecimal(temp);
+					auto bigNum = new BigNumber(BigNumber::bigNumbers[temp]);
 					stackNumber.push_back(bigNum);
 				}
 				else
 				{
-					auto bigNum = new BigNumber(temp);
-					stackNumber.push_back(bigNum);
+					bool isPoint = false;
+					for (int i = 0; i < (int)temp.length(); i++)
+					{
+						if (temp[i] == '.')
+						{
+							isPoint = true;
+							break;
+						}
+					}
+					if (isPoint)
+					{
+						auto bigNum = new BigDecimal(temp);
+						stackNumber.push_back(bigNum);
+					}
+					else
+					{
+						auto bigNum = new BigNumber(temp);
+						stackNumber.push_back(bigNum);
+					}
 				}
 				//不是運算符號，代表其為運算元
 				//將此數放入堆疊中
@@ -109,4 +134,5 @@ void Computer(string str)
 			temp += str[i];
 		}
 	}
+	return *stackNumber[0];
 }

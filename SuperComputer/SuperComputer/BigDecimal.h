@@ -11,6 +11,7 @@ public:
 
 	void Print();
 	vector<int> getDenominator();
+	void setDenominator(vector<int>);
 	bool isDecimal();
 	friend void RFTCD(BigDecimal &a, BigDecimal &b);
 	void Scale(BigNumber n);
@@ -19,7 +20,8 @@ public:
 	void Multiply(BigNumber &n);
 	void Divide(BigNumber &n);
 	void Power(BigNumber &n);
-	void factorial();
+	void Factorial();
+	static map <string, BigDecimal> bigDecimals;
 private:
 	vector<int> denominator;
 };

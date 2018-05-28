@@ -1,4 +1,6 @@
 #include "BigNumber.h"
+#include "Computer.h"
+#include "InorderToPostorder.h"
 #include <algorithm>
 
 BigNumber::BigNumber()
@@ -12,12 +14,40 @@ BigNumber::~BigNumber()
 
 BigNumber::BigNumber(string str)
 {
-	reverse(str.begin(), str.end());
+	bool isDone = true;
 	for (int i = 0; i < (int)str.length(); i++)
 	{
-		this->numerator.push_back(str[i] - '0');
+		if ((str[i] < '0' || str[i] > '9') && str[i] != '.')
+		{
+			isDone = false;
+			break;
+		}
 	}
-	this->isNagetive = false;
+	//輸入的是數字
+	if(isDone)
+	{ 
+		reverse(str.begin(), str.end());
+		for (int i = 0; i < (int)str.length(); i++)
+		{
+			if (str[i] >= '0'&&str[i] <= '9')
+				this->numerator.push_back(str[i] - '0');
+			else
+				this->numerator.clear();
+		}
+		for (int i = (int)this->numerator.size()-1; i > 0; i--)
+		{
+			if (this->numerator[i] == 0)
+				this->numerator.pop_back();
+			else
+				break;
+		}
+		this->isNagetive = false;
+	}
+	//輸入的是運算式
+	else
+	{
+		*this = Computer(Postorder(str));
+	}
 }
 
 void BigNumber::Print()
@@ -36,6 +66,10 @@ vector<int> BigNumber::getDenominator()
 	vector<int> temp;
 	temp.push_back(1);
 	return temp;
+}
+
+void BigNumber::setDenominator(vector<int> d)
+{
 }
 
 bool BigNumber::isDecimal()
@@ -158,6 +192,8 @@ void BigNumber::Multiply(BigNumber &n)
 	}
 	temp.isNagetive = this->isNagetive^n.isNagetive;
 	*this = temp;
+	if (this->numerator.size() == 1 && this->numerator[0] == 0)
+		this->isNagetive = false;
 }
 
 void BigNumber::Divide(BigNumber &n)
@@ -209,6 +245,8 @@ void BigNumber::Divide(BigNumber &n)
 	{
 		*this = BigNumber("0");
 	}
+	if (this->numerator.size() == 1 && this->numerator[0] == 0)
+		this->isNagetive = false;
 }
 
 void BigNumber::Power(BigNumber &n)
@@ -236,7 +274,7 @@ void BigNumber::Power(BigNumber &n)
 	}
 }
 
-void BigNumber::factorial()
+void BigNumber::Factorial()
 {
 	BigNumber zero("0"), one("1"), factor("1");
 	if (AEqualB(*this, zero) || AEqualB(*this, one))
@@ -257,6 +295,8 @@ void BigNumber::factorial()
 void BigNumber::Nagetive()
 {
 	this->isNagetive = !this->isNagetive;
+	if (this->numerator.size() == 1 && this->numerator[0] == 0)
+		this->isNagetive = false;
 }
 
 bool ABigerB(BigNumber A, BigNumber B)
@@ -290,3 +330,5 @@ bool AEqualB(BigNumber A, BigNumber B)
 	}
 	return false;
 }
+
+map<string, BigNumber> BigDecimal::bigNumbers = {};
