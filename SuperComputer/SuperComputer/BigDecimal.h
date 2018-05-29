@@ -9,7 +9,9 @@ public:
 	BigDecimal(string str);
 	BigDecimal(BigNumber n);
 
-	void Print();
+	friend ostream& operator<<(ostream&, const BigDecimal&);
+
+	string Print();
 	vector<int> getDenominator();
 	void setDenominator(vector<int>);
 	bool isDecimal();

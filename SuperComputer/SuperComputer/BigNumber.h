@@ -11,7 +11,9 @@ public:
 	BigNumber();
 	~BigNumber();
 	BigNumber(string str);
-	virtual void Print();
+	virtual string Print();
+
+	friend ostream& operator<<(ostream&, const BigNumber&);
 
 	friend bool ABigerB(BigNumber A, BigNumber B);
 	friend bool AEqualB(BigNumber A, BigNumber B);
@@ -25,7 +27,10 @@ public:
 	virtual void Power(BigNumber &n);
 	virtual void Factorial();
 	virtual void Nagetive();
+
+
 	vector<int> numerator;
 	bool isNagetive;
 	static map <string, BigNumber> bigNumbers;
+	int error;
 };

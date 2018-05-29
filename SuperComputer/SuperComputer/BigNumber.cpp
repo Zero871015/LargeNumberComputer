@@ -2,10 +2,12 @@
 #include "Computer.h"
 #include "InorderToPostorder.h"
 #include <algorithm>
+#include <sstream>
 
 BigNumber::BigNumber()
 {
 	this->isNagetive = false;
+	this->error = 0;
 }
 
 BigNumber::~BigNumber()
@@ -15,6 +17,7 @@ BigNumber::~BigNumber()
 BigNumber::BigNumber(string str)
 {
 	bool isDone = true;
+	this->error = 0;
 	for (int i = 0; i < (int)str.length(); i++)
 	{
 		if ((str[i] < '0' || str[i] > '9') && str[i] != '.')
@@ -50,15 +53,29 @@ BigNumber::BigNumber(string str)
 	}
 }
 
-void BigNumber::Print()
+string BigNumber::Print()
 {
-	if (this->isNagetive)
-		cout << '-';
-	for (int i = (int)this->numerator.size() - 1; i >= 0; i--)
+	string ans;
+	if (this->error == 1)
 	{
-		cout << this->numerator[i];
+		ans = "出現不存在的變數";
 	}
-	cout << endl;
+	else if (this->error == 2)
+	{
+		ans = "運算式錯誤，請重新檢查";
+	}
+	else
+	{
+		stringstream ss;
+		if (this->isNagetive)
+			ans += "-";
+		for (int i = (int)this->numerator.size() - 1; i >= 0; i--)
+		{
+			ss << this->numerator[i];
+		}
+		ans += ss.str();
+	}
+	return ans;
 }
 
 vector<int> BigNumber::getDenominator()
@@ -299,6 +316,17 @@ void BigNumber::Nagetive()
 		this->isNagetive = false;
 }
 
+ostream & operator<<(ostream & os, const BigNumber & n)
+{
+	if (n.isNagetive)
+		os << '-';
+	for (int i = (int)n.numerator.size() - 1; i >= 0; i--)
+	{
+		os << n.numerator[i];
+	}
+	return os;
+}
+
 bool ABigerB(BigNumber A, BigNumber B)
 {
 	if (A.numerator.size() > B.numerator.size())
@@ -331,4 +359,4 @@ bool AEqualB(BigNumber A, BigNumber B)
 	return false;
 }
 
-map<string, BigNumber> BigDecimal::bigNumbers = {};
+map<string, BigNumber> BigNumber::bigNumbers = {};

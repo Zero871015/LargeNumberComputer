@@ -1,10 +1,12 @@
 #include "BigDecimal.h"
 #include "InorderToPostorder.h"
 #include "Computer.h"
+#include <sstream>
 
 BigDecimal::BigDecimal()
 {
 	this->isNagetive = false;
+	this->error = 0;
 }
 
 BigDecimal::~BigDecimal()
@@ -13,6 +15,7 @@ BigDecimal::~BigDecimal()
 
 BigDecimal::BigDecimal(string str)
 {
+	this->error = 0;
 	bool isDone = true;
 	for (int i = 0; i < (int)str.length(); i++)
 	{
@@ -70,6 +73,7 @@ BigDecimal::BigDecimal(string str)
 	else
 	{
 		*this = Computer(Postorder(str));
+		this->setDenominator(Computer(Postorder(str)).getDenominator());
 	}
 }
 
@@ -78,22 +82,27 @@ BigDecimal::BigDecimal(BigNumber n)
 	this->numerator = n.numerator;
 	this->denominator.push_back(1);
 	this->isNagetive = n.isNagetive;
+	this->error = n.error;
 }
 
-void BigDecimal::Print()
+string BigDecimal::Print()
 {
+	string ans;
+	stringstream ss;
 	if (this->isNagetive)
-		cout << '-';
+		ans += '-';
 	for (int i = (int)this->numerator.size()-1; i >=0; i--)
 	{
-		cout << this->numerator[i];
+		ss << this->numerator[i];
 	}
-	cout << '/';
+	ans += ss.str() + "/";
+	ss.str("");
 	for (int i = (int)this->denominator.size()-1; i >=0 ; i--)
 	{
-		cout << this->denominator[i];
+		ss << this->denominator[i];
 	}
-	cout << endl;
+	ans += ss.str();
+	return ans;
 }
 
 vector<int> BigDecimal::getDenominator()
@@ -232,6 +241,22 @@ void BigDecimal::Power(BigNumber &n)
 
 void BigDecimal::Factorial()
 {
+}
+
+ostream & operator<<(ostream & os, const BigDecimal & d)
+{
+	if (d.isNagetive)
+		os << '-';
+	for (int i = (int)d.numerator.size() - 1; i >= 0; i--)
+	{
+		os << d.numerator[i];
+	}
+	os << '/';
+	for (int i = (int)d.denominator.size() - 1; i >= 0; i--)
+	{
+		os << d.denominator[i];
+	}
+	return os;
 }
 
 void RFTCD(BigDecimal & a, BigDecimal & b)
