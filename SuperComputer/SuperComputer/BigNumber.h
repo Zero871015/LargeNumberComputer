@@ -24,6 +24,7 @@ public:
 	virtual void Subtract(BigNumber &n);
 	virtual void Multiply(BigNumber &n);
 	virtual void Divide(BigNumber &n);
+	void Remainder(BigNumber &n);
 	virtual void Power(BigNumber &n);
 	virtual void Factorial();
 	virtual void Nagetive();

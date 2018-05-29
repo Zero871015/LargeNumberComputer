@@ -87,11 +87,62 @@ BigDecimal::BigDecimal(BigNumber n)
 
 string BigDecimal::Print()
 {
+	this->FractionReduction();
+
 	string ans;
 	stringstream ss;
 	if (this->isNagetive)
 		ans += '-';
-	for (int i = (int)this->numerator.size()-1; i >=0; i--)
+
+	////////////
+	BigNumber num, de;
+	num.numerator = this->numerator;
+	de.numerator = this->denominator;
+	int j;
+	BigNumber count, tmp;
+	BigNumber hundred = BigDecimal("10^100");
+	num.Multiply(hundred);
+
+	for (int i = 0; i < (int)num.numerator.size(); i++)
+	{
+		j = 0;
+		tmp.numerator.insert(tmp.numerator.begin(), num.numerator[(int)num.numerator.size() - 1 - i]);
+		for (int k = (int)tmp.numerator.size() - 1; k > 0; k--)
+		{
+			if (tmp.numerator[k] == 0)
+				tmp.numerator.pop_back();
+			else
+				break;
+		}
+		if (ABigerB(tmp, de))
+		{
+			while (ABigerB(tmp, de))
+			{
+				tmp.Subtract(de);
+				j++;
+			}
+		}
+		count.numerator.insert(count.numerator.begin(), j);
+	}
+	for (int i = (int)count.numerator.size() - 101; i > 0; i--)
+	{
+		if (count.numerator[i] == 0)
+		{
+			count.numerator.pop_back();
+		}
+		else
+			break;
+	}
+	for (int i = (int)count.numerator.size() - 1; i >= 0; i--)
+	{
+		if (i == 99)
+			ss << '.';
+		ss << count.numerator[i];
+	}
+	ans += ss.str();
+	ss.str("");
+	////////////
+	/*for (int i = (int)this->numerator.size()-1; i >=0; i--)
 	{
 		ss << this->numerator[i];
 	}
@@ -101,7 +152,7 @@ string BigDecimal::Print()
 	{
 		ss << this->denominator[i];
 	}
-	ans += ss.str();
+	ans += ss.str();*/
 	return ans;
 }
 
@@ -118,6 +169,31 @@ void BigDecimal::setDenominator(vector<int> d)
 bool BigDecimal::isDecimal()
 {
 	return true;
+}
+
+void BigDecimal::FractionReduction()
+{
+	BigNumber n,m,gcd;
+	n.numerator = this->numerator;
+	m.numerator = this->denominator;
+	while (!AEqualB(n, BigNumber("0")))
+	{
+		if (!ABigerB(n, m))
+		{
+			m.Remainder(n);
+		}
+		else
+			n.Remainder(m);
+		if (AEqualB(m, BigNumber("0")))
+			swap(n, m);
+	}
+	gcd = m;
+	n.numerator = this->numerator;
+	m.numerator = this->denominator;
+	n.Divide(gcd);
+	m.Divide(gcd);
+	this->numerator = n.numerator;
+	this->denominator = m.numerator;
 }
 
 void BigDecimal::Scale(BigNumber n)
@@ -270,10 +346,12 @@ void RFTCD(BigDecimal & a, BigDecimal & b)
 	{
 		if (!ABigerB(n, m))
 		{
-			m.Subtract(n);
+			m.Remainder(n);
 		}
 		else
-			n.Subtract(m);
+			n.Remainder(m);
+		if (AEqualB(m, BigNumber("0")))
+			swap(n, m);
 	}
 	GCD = m;
 	m.numerator = a.denominator;

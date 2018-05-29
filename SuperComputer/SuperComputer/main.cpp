@@ -45,6 +45,11 @@ int main()
 	UpdataScr("","");	//初始化Console介面
 	while (getline(cin,str))
 	{
+		if ((int)str.length() == 0)
+		{
+			UpdataScr("", "輸入為空白");
+			continue;
+		}
 		string sub;
 		string name;
 		string expression;

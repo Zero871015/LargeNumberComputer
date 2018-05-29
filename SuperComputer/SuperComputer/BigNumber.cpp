@@ -49,6 +49,11 @@ BigNumber::BigNumber(string str)
 	//輸入的是運算式
 	else
 	{
+		/*BigNumber num, de;
+		num.numerator = Computer(Postorder(str)).numerator;
+		de.numerator = Computer(Postorder(str)).getDenominator();
+		num.Divide(de);
+		*this = num;*/
 		*this = Computer(Postorder(str));
 	}
 }
@@ -264,6 +269,34 @@ void BigNumber::Divide(BigNumber &n)
 	}
 	if (this->numerator.size() == 1 && this->numerator[0] == 0)
 		this->isNagetive = false;
+}
+
+void BigNumber::Remainder(BigNumber & n)
+{
+	int i, j;
+	BigNumber tmp;
+
+	for (i = 0; i < (int)this->numerator.size(); i++)
+	{
+		j = 0;
+		tmp.numerator.insert(tmp.numerator.begin(), this->numerator[(int)this->numerator.size() - 1 - i]);
+		for (int k = (int)tmp.numerator.size() - 1; k > 0; k--)
+		{
+			if (tmp.numerator[k] == 0)
+				tmp.numerator.pop_back();
+			else
+				break;
+		}
+		if (ABigerB(tmp, n))
+		{
+			while (ABigerB(tmp, n))
+			{
+				tmp.Subtract(n);
+				j++;
+			}
+		}
+	}
+	*this = tmp;
 }
 
 void BigNumber::Power(BigNumber &n)

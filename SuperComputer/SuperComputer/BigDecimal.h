@@ -16,6 +16,7 @@ public:
 	void setDenominator(vector<int>);
 	bool isDecimal();
 	friend void RFTCD(BigDecimal &a, BigDecimal &b);
+	void FractionReduction();
 	void Scale(BigNumber n);
 	void Add(BigNumber &n);
 	void Subtract(BigNumber &n);
