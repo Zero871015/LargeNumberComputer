@@ -142,17 +142,6 @@ string BigDecimal::Print()
 	ans += ss.str();
 	ss.str("");
 	////////////
-	/*for (int i = (int)this->numerator.size()-1; i >=0; i--)
-	{
-		ss << this->numerator[i];
-	}
-	ans += ss.str() + "/";
-	ss.str("");
-	for (int i = (int)this->denominator.size()-1; i >=0 ; i--)
-	{
-		ss << this->denominator[i];
-	}
-	ans += ss.str();*/
 	return ans;
 }
 

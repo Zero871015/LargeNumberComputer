@@ -49,11 +49,6 @@ BigNumber::BigNumber(string str)
 	//輸入的是運算式
 	else
 	{
-		/*BigNumber num, de;
-		num.numerator = Computer(Postorder(str)).numerator;
-		de.numerator = Computer(Postorder(str)).getDenominator();
-		num.Divide(de);
-		*this = num;*/
 		*this = Computer(Postorder(str));
 	}
 }
@@ -68,6 +63,10 @@ string BigNumber::Print()
 	else if (this->error == 2)
 	{
 		ans = "運算式錯誤，請重新檢查";
+	}
+	else if (this->error == 3)
+	{
+		ans = "嘗試除零";
 	}
 	else
 	{
@@ -302,7 +301,11 @@ void BigNumber::Remainder(BigNumber & n)
 void BigNumber::Power(BigNumber &n)
 {
 	BigNumber zero("0"), one("1"), two("2");
-	if (AEqualB(n, zero))
+	if (AEqualB(*this,zero)&&n.isNagetive)
+	{
+		this->error = 3;
+	}
+	else if (AEqualB(n, zero))
 	{
 		*this = one;
 	}

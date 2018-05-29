@@ -113,6 +113,10 @@ BigNumber& Computer(string str)
 					stackNumber[size - 2]->Power(*stackNumber[size - 1]);
 					stackNumber.pop_back();
 					size--;
+					if (stackNumber[size - 1]->error != 0)
+					{
+						return *stackNumber[size - 1];
+					}
 				}
 				//從堆疊拿出一個數做階層
 				else if (temp == "!")

@@ -31,6 +31,7 @@ void UpdataScr(string in1,string in2)
 		cout << i.first << " : " << i.second << endl;
 	}
 
+	//調整游標位置
 	HANDLE hOut;
 	COORD c;
 	c.X = 0; c.Y = 1;
@@ -48,6 +49,11 @@ int main()
 		if ((int)str.length() == 0)
 		{
 			UpdataScr("", "輸入為空白");
+			continue;
+		}
+		else if (str == ".")
+		{
+			UpdataScr("", "輸入錯誤");
 			continue;
 		}
 		string sub;
@@ -136,7 +142,11 @@ int main()
 				auto itn = BigNumber::bigNumbers.find(name);
 				if (itn != BigNumber::bigNumbers.end())
 				{
-					BigNumber::bigNumbers[name] = BigNumber(expression);
+					BigNumber num, de;
+					num.numerator = BigDecimal(expression).numerator;
+					de.numerator = BigDecimal(expression).getDenominator();
+					num.Divide(de);
+					BigNumber::bigNumbers[name] = num;
 					result = "已變更變數" + name;
 					isFound = true;
 				}
