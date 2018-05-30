@@ -80,6 +80,13 @@ BigNumber& Computer(string str)
 						error->error = 2;
 						return *error;
 					}
+					if (stackNumber[size - 1]->numerator.size() == 1 && stackNumber[size - 1]->numerator[0] == 0)
+					{
+						//¿ù»~¡A¹Á¸Õ/0
+						BigNumber* error = new BigNumber();
+						error->error = 3;
+						return *error;
+					}
 					if (stackNumber[size - 1]->isDecimal() && !stackNumber[size - 2]->isDecimal())
 					{
 						BigDecimal buffer(*stackNumber[size - 1]);
@@ -116,7 +123,17 @@ BigNumber& Computer(string str)
 						error->error = 2;
 						return *error;
 					}
-					stackNumber[size - 2]->Power(*stackNumber[size - 1]);
+					if (!stackNumber[size - 2]->isDecimal() && stackNumber[size - 1]->isDecimal())
+					{
+						BigDecimal buffer(*stackNumber[size - 1]);
+						buffer.setDenominator(stackNumber[size - 1]->getDenominator());
+						swap(stackNumber[size - 1], stackNumber[size - 2]);
+						stackNumber[size - 2]->setDenominator(stackNumber[size - 1]->getDenominator());
+						stackNumber[size - 2]->numerator = stackNumber[size - 1]->numerator;
+						stackNumber[size - 2]->Power(buffer);
+					}
+					else
+						stackNumber[size - 2]->Power(*stackNumber[size - 1]);
 					stackNumber.pop_back();
 					size--;
 					if (stackNumber[size - 1]->error != 0)

@@ -25,6 +25,7 @@ public:
 	void Power(BigNumber &n);
 	void Factorial();
 	static map <string, BigDecimal> bigDecimals;
+	friend BigDecimal Sqrts(BigNumber);
 private:
 	vector<int> denominator;
 };

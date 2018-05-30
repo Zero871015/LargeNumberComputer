@@ -89,13 +89,28 @@ BigDecimal::BigDecimal(BigNumber n)
 
 string BigDecimal::Print()
 {
+	string ans;
+
+	if (this->error == 1)
+	{
+		return ans = "出現不存在的變數";
+	}
+	else if (this->error == 2)
+	{
+		return ans = "運算式錯誤，請重新檢查";
+	}
+	else if (this->error == 3)
+	{
+		return ans = "嘗試除零";
+	}
+
 	if (this->numerator.size() == 1 && this->numerator[0] == 0)
 	{
 		return "0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
 	}
 	this->FractionReduction();
 
-	string ans;
+	
 	stringstream ss;
 	if (this->isNagetive)
 		ans += '-';
@@ -308,12 +323,167 @@ void BigDecimal::Divide(BigNumber &n)
 	this->Multiply(temp);
 }
 
+BigDecimal Sqrts(BigNumber n)
+{
+	if ((int)n.numerator.size() % 2 == 1)
+		n.numerator.push_back(0);
+	BigNumber temp, temp2("0");
+	BigDecimal ans;
+	for (int i = (int)n.numerator.size() - 1; i >= 1; i -= 2)
+	{
+		temp.numerator.insert(temp.numerator.begin(), n.numerator[i]);
+		temp.numerator.insert(temp.numerator.begin(), n.numerator[i - 1]);
+		BigNumber s("0"), temp3;
+		BigNumber one("1");
+		for (int k = (int)temp.numerator.size() - 1; k > 0; k--)
+		{
+			if (temp.numerator[k] == 0)
+				temp.numerator.pop_back();
+			else
+				break;
+		}
+		temp3 = temp2;
+		temp3.numerator.insert(temp3.numerator.begin(), s.numerator[0]);
+		temp3.Multiply(s);
+		while (ABigerB(temp3, temp) == false)
+		{
+			s.Add(one);
+			temp3 = temp2;
+			temp3.numerator.insert(temp3.numerator.begin(), s.numerator[0]);
+			temp3.Multiply(s);
+		}
+		if (AEqualB(temp3, temp) == false)
+		{
+			temp3.Divide(s);
+			temp3.numerator[0] -= 1;
+			s.Subtract(one);
+			temp3.Multiply(s);
+		}
+		temp.Subtract(temp3);
+		if (AEqualB(s, BigNumber("0")) == false)
+			temp3.Divide(s);
+		temp3.Add(s);
+		temp2 = temp3;
+		ans.numerator.insert(ans.numerator.begin(), s.numerator[0]);
+	}
+	for (int i = 0; i < 100; i++)
+	{
+		temp.numerator.insert(temp.numerator.begin(), 0);
+		temp.numerator.insert(temp.numerator.begin(), 0);
+		BigNumber s("0"), temp3("0");
+		BigNumber one("1");
+		for (int k = (int)temp.numerator.size() - 1; k > 0; k--)
+		{
+			if (temp.numerator[k] == 0)
+				temp.numerator.pop_back();
+			else
+				break;
+		}
+		temp3 = temp2;
+		temp3.numerator.insert(temp3.numerator.begin(), 0);
+		for (int k = (int)temp3.numerator.size() - 1; k > 0; k--)
+		{
+			if (temp3.numerator[k] == 0)
+				temp3.numerator.pop_back();
+			else
+				break;
+		}
+		temp3.Multiply(s);
+		while (ABigerB(temp3, temp) == false)
+		{
+			s.Add(one);
+			temp3 = temp2;
+			temp3.numerator.insert(temp3.numerator.begin(), s.numerator[0]);
+			temp3.Multiply(s);
+		}
+		if (AEqualB(temp3, temp) == false)
+		{
+			temp3 = temp2;
+			s.Subtract(one);
+			temp3.numerator.insert(temp3.numerator.begin(), s.numerator[0]);
+			temp3.Multiply(s);
+		}
+		temp.Subtract(temp3);
+		if (AEqualB(s, BigNumber("0")) == false)
+			temp3.Divide(s);
+		temp3.Add(s);
+		if (AEqualB(temp3, BigNumber("0")) == false)
+			temp2 = temp3;
+		else
+			temp2.numerator.insert(temp2.numerator.begin(), 0);
+		ans.numerator.insert(ans.numerator.begin(), s.numerator[0]);
+		ans.denominator.push_back(0);
+	}
+	ans.denominator.push_back(1);
+	return ans;
+}
+
 void BigDecimal::Power(BigNumber &n)
 {
+	this->FractionReduction();
+	BigNumber up, down, one("1");;
+	BigDecimal temp(n);
+	temp.denominator = n.getDenominator();
+	BigDecimal base = *this;
+	up.numerator = temp.numerator;
+	down.numerator = temp.denominator;
+	up.Divide(down);
+
+	if (AEqualB(up, BigNumber("0")) == true)
+	{
+		BigDecimal a(one);
+		*this = a;
+	}
+	while (ABigerB(up, BigNumber("2")) == true)
+	{
+		this->Multiply(base);
+		up.Subtract(one);
+	}
+	up.numerator = temp.numerator;
+	up.Remainder(down);
+	if (AEqualB(up, BigNumber("0")) == false)
+	{
+		BigDecimal integer, decimal;
+		up.numerator = base.numerator;
+		down.numerator = base.denominator;
+		integer = Sqrts(up);
+		this->Multiply(integer);
+		decimal = Sqrts(down);
+		this->Divide(decimal);
+	}
+	if (n.isNagetive == true)
+	{
+		BigDecimal inverse("1");
+		inverse.Divide(*this);
+		*this = inverse;
+	}
+	this->FractionReduction();
 }
 
 void BigDecimal::Factorial()
 {
+	if (this->isNagetive == true)
+	{
+		this->error = 2;
+		return;
+	}
+	BigNumber up, down;
+	up.numerator = this->numerator;
+	down.numerator = this->denominator;
+	up.Remainder(down);
+
+	if (AEqualB(up, BigNumber("0")) == true)
+	{
+		up.numerator = this->numerator;
+		up.Divide(down);
+		up.Factorial();
+		BigDecimal ans(up);
+		*this = ans;
+	}
+	else
+	{
+		this->error = 2;
+	}
 }
 
 ostream & operator<<(ostream & os, const BigDecimal & d)
