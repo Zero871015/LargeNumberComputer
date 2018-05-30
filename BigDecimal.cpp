@@ -321,6 +321,9 @@ BigDecimal Sqrts(BigNumber n)
 			else
 				break;
 		}
+		temp3 = temp2;
+		temp3.numerator.insert(temp3.numerator.begin(), s.numerator[0]);
+		temp3.Multiply(s);
 		while (ABigerB(temp3, temp) == false)
 		{
 			s.Add(one);
@@ -336,7 +339,8 @@ BigDecimal Sqrts(BigNumber n)
 			temp3.Multiply(s);
 		}
 		temp.Subtract(temp3);
-		temp3.Divide(s);
+		if (AEqualB(s, BigNumber("0")) == false)
+			temp3.Divide(s);
 		temp3.Add(s);
 		temp2 = temp3;
 		ans.numerator.insert(ans.numerator.begin(), s.numerator[0]);
@@ -354,6 +358,16 @@ BigDecimal Sqrts(BigNumber n)
 			else
 				break;
 		}
+		temp3 = temp2;
+		temp3.numerator.insert(temp3.numerator.begin(), 0);
+		for (int k = (int)temp3.numerator.size() - 1; k > 0; k--)
+		{
+			if (temp3.numerator[k] == 0)
+				temp3.numerator.pop_back();
+			else
+				break;
+		}
+		temp3.Multiply(s);
 		while (ABigerB(temp3, temp) == false)
 		{
 			s.Add(one);
@@ -361,15 +375,21 @@ BigDecimal Sqrts(BigNumber n)
 			temp3.numerator.insert(temp3.numerator.begin(), s.numerator[0]);
 			temp3.Multiply(s);
 		}
-		if (AEqualB(temp3, BigNumber("0")) == false)
+		if (AEqualB(temp3, temp) == false)
 		{
-			temp3.Divide(s);
-			temp3.numerator[0] -= 1;
+			temp3 = temp2;
 			s.Subtract(one);
+			temp3.numerator.insert(temp3.numerator.begin(), s.numerator[0]);
 			temp3.Multiply(s);
 		}
+		temp.Subtract(temp3);
+		if (AEqualB(s, BigNumber("0")) == false)
+			temp3.Divide(s);
 		temp3.Add(s);
-		temp2 = temp3;
+		if (AEqualB(temp3, BigNumber("0")) == false)
+			temp2 = temp3;
+		else
+			temp2.numerator.insert(temp2.numerator.begin(), 0);
 		ans.numerator.insert(ans.numerator.begin(), s.numerator[0]);
 		ans.denominator.push_back(0);
 	}
@@ -387,6 +407,7 @@ void BigDecimal::Power(BigNumber &n)
 	up.numerator = temp.numerator;
 	down.numerator = temp.denominator;
 	up.Divide(down);
+
 	if (AEqualB(up, BigNumber("0")) == true)
 	{
 		BigDecimal a(one);
@@ -408,6 +429,12 @@ void BigDecimal::Power(BigNumber &n)
 		this->Multiply(integer);
 		decimal = Sqrts(down);
 		this->Divide(decimal);
+	}
+	if (n.isNagetive == true)
+	{
+		BigDecimal inverse("1");
+		inverse.Divide(*this);
+		*this = inverse;
 	}
 	this->FractionReduction();
 }
