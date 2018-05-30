@@ -1,3 +1,10 @@
+// Name: B10615032,B10615020,B10615030
+// Date: 05/17/2018
+// Last Update: 05/31/2018
+// Problem statement: A computer can use big number.
+
+#define DEBUG
+
 #include <iostream>
 #include <string>
 #include "InorderToPostorder.h"
@@ -41,12 +48,48 @@ void UpdataScr(string in1,string in2)
 
 int main()
 {
+#ifdef DEBUG
+	//直接賦予字串到整數
+	BigNumber test1 = "10*3";
+	UpdataScr("測試一", test1.Print());
+	system("pause");
+	//直接賦予字串到小數
+	BigDecimal test2 = "10.1";
+	UpdataScr("測試二", test2.Print());
+	system("pause");
+	//用cin,cout輸出
+	system("CLS");
+	cout << "輸入一個數字重設test1" << endl;
+	cin >> test1;
+	cout << test1 << endl;
+	system("pause");
+	//測試兩種型別可以放入同一容器中
+	system("CLS");
+	vector<BigNumber*> nums;
+	nums.push_back(&test1);
+	nums.push_back(&test2);
+	for (const auto& num : nums)
+		cout << num->Print() << endl;
+	system("pause");
+#endif // DEBUG
+
 	string str;			//輸入字串
 	string result;		//執行結果
 	UpdataScr("","");	//初始化Console介面
 	while (getline(cin,str))
 	{
-		if ((int)str.length() == 0)
+		result = str;
+		for (int i = (int)result.length()-1; i >= 0 ; i--)
+		{
+			if (result[i] == ' ')
+				result.pop_back();
+		}
+		if (result == "")
+		{
+			UpdataScr("", "輸入為空白");
+			continue;
+		}
+		else if ((int)str.length() == 0)
 		{
 			UpdataScr("", "輸入為空白");
 			continue;

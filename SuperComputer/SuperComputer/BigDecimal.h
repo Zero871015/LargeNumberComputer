@@ -1,3 +1,8 @@
+// Name: B10615032,B10615020,B10615030
+// Date: 05/17/2018
+// Last Update: 05/31/2018
+// Problem statement: Big decimal part.
+
 #pragma once
 #include "BigNumber.h"
 class BigDecimal :
@@ -8,13 +13,15 @@ public:
 	~BigDecimal();
 	BigDecimal(string str);
 	BigDecimal(BigNumber n);
+	BigDecimal(const char* s);
 
-	friend ostream& operator<<(ostream&, const BigDecimal&);
+	friend ostream& operator<<(ostream&, const BigDecimal);
 
 	string Print();
 	vector<int> getDenominator();
 	void setDenominator(vector<int>);
 	bool isDecimal();
+	bool isDecimal()const;
 	friend void RFTCD(BigDecimal &a, BigDecimal &b);
 	void FractionReduction();
 	void Scale(BigNumber n);

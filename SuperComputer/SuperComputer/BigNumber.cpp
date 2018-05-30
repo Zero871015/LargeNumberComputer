@@ -1,3 +1,8 @@
+// Name: B10615032,B10615020,B10615030
+// Date: 05/17/2018
+// Last Update: 05/31/2018
+// Problem statement: Big integer part.
+
 #include "BigNumber.h"
 #include "Computer.h"
 #include "InorderToPostorder.h"
@@ -53,6 +58,12 @@ BigNumber::BigNumber(string str)
 	}
 }
 
+BigNumber::BigNumber(const char * s)
+{
+	string str = s;
+	*this = BigNumber(str);
+}
+
 string BigNumber::Print()
 {
 	string ans;
@@ -89,11 +100,17 @@ vector<int> BigNumber::getDenominator()
 	return temp;
 }
 
+
 void BigNumber::setDenominator(vector<int> d)
 {
 }
 
 bool BigNumber::isDecimal()
+{
+	return false;
+}
+
+bool BigNumber::isDecimal() const
 {
 	return false;
 }
@@ -329,6 +346,11 @@ void BigNumber::Power(BigNumber &n)
 
 void BigNumber::Factorial()
 {
+	if (this->isNagetive)
+	{
+		this->error = 2;
+		return;
+	}
 	BigNumber zero("0"), one("1"), factor("1");
 	if (AEqualB(*this, zero) || AEqualB(*this, one))
 	{
@@ -352,7 +374,15 @@ void BigNumber::Nagetive()
 		this->isNagetive = false;
 }
 
-ostream & operator<<(ostream & os, const BigNumber & n)
+istream & operator>>(istream & is, BigNumber & n)
+{
+	string str;
+	is >> str;
+	n = (str);
+	return is;
+}
+
+ostream & operator<<(ostream & os, const BigNumber n)
 {
 	if (n.isNagetive)
 		os << '-';

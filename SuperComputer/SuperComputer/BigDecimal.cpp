@@ -1,3 +1,8 @@
+// Name: B10615032,B10615020,B10615030
+// Date: 05/17/2018
+// Last Update: 05/31/2018
+// Problem statement: Big decimal part.
+
 #include "BigDecimal.h"
 #include "InorderToPostorder.h"
 #include "Computer.h"
@@ -87,6 +92,12 @@ BigDecimal::BigDecimal(BigNumber n)
 	this->error = n.error;
 }
 
+BigDecimal::BigDecimal(const char * s)
+{
+	string temp = s;
+	*this = BigDecimal(temp);
+}
+
 string BigDecimal::Print()
 {
 	string ans;
@@ -172,12 +183,18 @@ vector<int> BigDecimal::getDenominator()
 	return this->denominator;
 }
 
+
 void BigDecimal::setDenominator(vector<int> d)
 {
 	this->denominator = d;
 }
 
 bool BigDecimal::isDecimal()
+{
+	return true;
+}
+
+bool BigDecimal::isDecimal() const
 {
 	return true;
 }
@@ -486,7 +503,7 @@ void BigDecimal::Factorial()
 	}
 }
 
-ostream & operator<<(ostream & os, const BigDecimal & d)
+ostream & operator<<(ostream & os, const BigDecimal d)
 {
 	if (d.isNagetive)
 		os << '-';
