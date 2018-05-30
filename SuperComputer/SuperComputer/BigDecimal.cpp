@@ -67,6 +67,8 @@ BigDecimal::BigDecimal(string str)
 			else
 				break;
 		}
+		if (this->denominator.size() == 1 && this->denominator[0] == 0)
+			this->denominator[0] = 1;
 		this->isNagetive = false;
 	}
 	//輸入是運算式
@@ -87,6 +89,10 @@ BigDecimal::BigDecimal(BigNumber n)
 
 string BigDecimal::Print()
 {
+	if (this->numerator.size() == 1 && this->numerator[0] == 0)
+	{
+		return "0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+	}
 	this->FractionReduction();
 
 	string ans;
@@ -124,7 +130,7 @@ string BigDecimal::Print()
 		}
 		count.numerator.insert(count.numerator.begin(), j);
 	}
-	for (int i = (int)count.numerator.size() - 101; i > 0; i--)
+	for (int i = (int)count.numerator.size() - 1; i > 100; i--)
 	{
 		if (count.numerator[i] == 0)
 		{
@@ -141,6 +147,7 @@ string BigDecimal::Print()
 	}
 	ans += ss.str();
 	ss.str("");
+
 	////////////
 	return ans;
 }
@@ -270,6 +277,7 @@ void BigDecimal::Subtract(BigNumber &n)
 	temp = BigDecimal(a1);
 	temp.denominator = this->denominator;
 	*this = temp;
+	
 }
 
 void BigDecimal::Multiply(BigNumber &n)

@@ -44,6 +44,12 @@ BigNumber& Computer(string str)
 						error->error = 2;
 						return *error;
 					}
+					if (stackNumber[size - 1]->isDecimal() && !stackNumber[size - 2]->isDecimal())
+					{
+						swap(stackNumber[size - 1], stackNumber[size - 2]);
+						stackNumber[size - 1]->Nagetive();
+						stackNumber[size - 2]->Nagetive();
+					}
 					stackNumber[size - 2]->Subtract(*stackNumber[size - 1]);
 					stackNumber.pop_back();
 					size--;
