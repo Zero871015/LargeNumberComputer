@@ -99,6 +99,7 @@ BigNumber& Computer(string str)
 						swap(stackNumber[size - 1], stackNumber[size - 2]);
 						stackNumber[size - 2]->setDenominator(stackNumber[size-1]->getDenominator());
 						stackNumber[size-2]->numerator=stackNumber[size-1]->numerator;
+						stackNumber[size - 2]->isNagetive = stackNumber[size - 1]->isNagetive;
 						stackNumber[size - 2]->Divide(buffer);
 					}
 					else
@@ -135,6 +136,7 @@ BigNumber& Computer(string str)
 						swap(stackNumber[size - 1], stackNumber[size - 2]);
 						stackNumber[size - 2]->setDenominator(stackNumber[size - 1]->getDenominator());
 						stackNumber[size - 2]->numerator = stackNumber[size - 1]->numerator;
+						stackNumber[size - 2]->isNagetive = stackNumber[size - 1]->isNagetive;
 						stackNumber[size - 2]->Power(buffer);
 					}
 					else

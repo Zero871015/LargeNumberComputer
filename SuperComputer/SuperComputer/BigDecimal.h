@@ -15,6 +15,7 @@ public:
 	BigDecimal(BigNumber n);
 	BigDecimal(const char* s);
 
+
 	friend ostream& operator<<(ostream&, const BigDecimal);
 
 	string Print();

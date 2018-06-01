@@ -15,3 +15,5 @@ SuperComputer/.vs/SuperComputer/v15/ipch/AutoPCH/94bbb3e0f7ca707d/COMPUTER.ipch
 *.vcxproj
 *.filters
 SuperComputer/SuperComputer/SuperComputer.vcxproj
+*.iobj
+*.ipdb

@@ -374,7 +374,7 @@ void BigNumber::Nagetive()
 		this->isNagetive = false;
 }
 
-istream & operator>>(istream & is, BigNumber & n)
+istream & operator>>(istream & is, BigNumber n)
 {
 	string str;
 	is >> str;

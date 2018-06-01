@@ -19,7 +19,7 @@ public:
 	BigNumber(const char* s);
 	virtual string Print();
 
-	friend istream& operator>>(istream&, BigNumber&);
+	friend istream& operator>>(istream&, BigNumber);
 	friend ostream& operator<<(ostream&, const BigNumber);
 
 	friend bool ABigerB(BigNumber A, BigNumber B);

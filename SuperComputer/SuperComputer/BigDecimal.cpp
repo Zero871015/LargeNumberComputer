@@ -449,6 +449,7 @@ void BigDecimal::Power(BigNumber &n)
 	if (AEqualB(up, BigNumber("0")) == true)
 	{
 		BigDecimal a(one);
+		a.isNagetive = this->isNagetive;
 		*this = a;
 	}
 	while (ABigerB(up, BigNumber("2")) == true)
@@ -460,6 +461,12 @@ void BigDecimal::Power(BigNumber &n)
 	up.Remainder(down);
 	if (AEqualB(up, BigNumber("0")) == false)
 	{
+		if (this->isNagetive)
+		{
+			this->error = 2;
+			return;
+		}
+		
 		BigDecimal integer, decimal;
 		up.numerator = base.numerator;
 		down.numerator = base.denominator;

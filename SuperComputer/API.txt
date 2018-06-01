@@ -1,0 +1,19 @@
+Integer x;
+Decimal y;
+
+cin >> x; // ¿é¤J 123456789
+cin >> y; // ¿é¤J 3.1415926
+
+cout << x + y << endl;
+cout << x - y << endl;
+cout << x * y << endl;
+cout << x / y << endl;
+
+Integer x = "123 * 8 + 456";
+Decimal y = "-1.0 / 3 - 45 / 13.0";
+
+vector<NumberObject*> nums;
+nums.push_back(&x); 
+nums.push_back(&y); 
+for(const auto& num : nums)
+	cout << *num << endl;
